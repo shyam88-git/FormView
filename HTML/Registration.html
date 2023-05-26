@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&family=Tangerine&display=swap" rel="stylesheet" />
+  <link href="/CSS/mystyles.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+  <h1>Register New Account</h1>
+  <form onsubmit="submitForm(event)">
+    <div id="container">
+      <div class="input-group">
+        <label for="profile-pic">Select Profile Picture:</label>
+        <input type="file" id="profile-pic" name="profile-pic" accept=".png, .jpg, .jpeg, .gif" required>
+      </div>
+      <div class="input-group">
+        <fieldset>
+          <legend>Activities</legend>
+          <label for="buy">Buy</label>
+          <input type="checkbox" id="buy" name="activity" value="buy" />
+          <label for="invest">Invest</label>
+          <input type="checkbox" id="invest" name="activity" value="invest" />
+          <label for="partner">Partner</label>
+          <input type="checkbox" id="art" name="activity" value="partner" />
+          <label for="lease">Lease</label>
+          <input type="checkbox" id="lease" name="activity" value="lease" />
+          <label for="franchise">Franchise</label>
+          <input type="checkbox" id="franchise" name="activity" value="franchise" />
+        </fieldset>
+      </div>
+      <div class="input-group">
+        <label for="location">Location:</label>
+        <select id="location" name="location" multiple size="5">
+          <option value="Delhi">Delhi</option>
+          <option value="Hyderabad">Hyderabad</option>
+          <option value="Chennai">Chennai</option>
+          <option value="Gujarat">Gujarat</option>
+          <option value="Mumbai">Mumbai</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label for="own">Funding Source</label>
+        <select id="funding-source" name="funding-source" multiple size="4">
+          <option value="Own">Own</option>
+          <option value="Family &amp; Friend">Family &amp; Friend</option>
+          <option value="Bank">Bank Loan</option>
+          <option value="External Investors">External Investors</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>Mobile</label>
+        <input type="number" name="mobile" id="mobile" placeholder="Enter mobile number" maxlength="10" pattern="[0-9]{10}">
+      </div>
+      <div class="input-group">
+        <label>Zip Code</label>
+        <input type="number" name="zip-code" id="zipcode" placeholder="Enter zip code" maxlength="6" pattern="[0-9]{5}">
+      </div>
+      <div class="input-group">
+        <label>Company Name</label>
+        <input type="text" id="company-name" name="company-name" placeholder="Enter Company name" oninvalid="setCustomValidity('Please enter a company name or leave it empty.')" oninput="setCustomValidity('')">
+      </div>
+      <div class="input-group">
+        <label for="skills">Skills:</label>
+        <div id="tags-container" class="tag-container">
+          <div class="tag">Marketing<span class="tag-close-btn" onclick="removeTag(this)">&times;</span></div>
+          <div class="tag">Electronics<span class="tag-close-btn" onclick="removeTag(this)">&times;</span></div>
+          <div class="tag">Culinary<span class="tag-close-btn" onclick="removeTag(this)">&times;</span></div>
+        </div>
+        <input type="text" id="tags-input" placeholder="Enter skills" onkeydown="handleTagInput(event)">
+      </div>
+      <div class="button-group">
+        <input id="register" type="submit" name="submit" value="Submit">
+      </div>
+    </div>
+  </form>
+  <script src="/JS/Skill.js"></script>
+  <script>
+    function submitForm(event) {
+      event.preventDefault();
+
+      const form = document.forms[0];
+
+      // Get form field values
+      const mobile = form.elements['mobile'].value;
+      const zipcode = form.elements['zip-code'].value;
+      const activities = Array.from(form.elements['activity'])
+        .filter(input => input.checked)
+        .map(input => input.value);
+      const location = Array.from(form.elements['location'])
+        .filter(option => option.selected)
+        .map(option => option.value);
+      const fundingSources = Array.from(form.elements['funding-source'])
+        .filter(option => option.selected)
+        .map(option => option.value);
+      const companyName = form.elements['company-name'].value;
+      const skills = Array.from(document.querySelectorAll('.tag'))
+        .map(tag => tag.textContent);
+
+      // Encode the values to be passed as URL parameters
+      const encodedMobile = encodeURIComponent(mobile);
+      const encodedZipcode = encodeURIComponent(zipcode);
+      const encodedActivities = encodeURIComponent(activities.join(','));
+      const encodedLocation = encodeURIComponent(location.join(','));
+      const encodedFundingSources = encodeURIComponent(fundingSources.join(','));
+      const encodedCompanyName = encodeURIComponent(companyName);
+      const encodedSkills = encodeURIComponent(skills.join(','));
+
+      // Construct the URL for the destination page with the encoded data
+      const url = `Front.html?mobile=${encodedMobile}&zipcode=${encodedZipcode}&activities=${encodedActivities}&location=${encodedLocation}&fundingSources=${encodedFundingSources}&companyName=${encodedCompanyName}&skills=${encodedSkills}`;
+
+      // Redirect to the destination page
+      window.location.href = url;
+    }
+  </script>
+</body>
+</html>

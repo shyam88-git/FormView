@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="/CSS/index.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="button-container">
+      <button class="edit-button" onclick="window.location.href='/HTML/Registration.html'">Edit</button>
+      <button class="delete-button">Delete</button>
+    </div>
+
+    <div class="upload-button">
+      <input type="file" id="upload" onchange="displayImage(event)" />
+      <label for="upload">
+        <div class="uploaded-image"></div>
+      </label>
+    </div>
+
+    <div class="section">
+      <h2>Business Interests</h2>
+      <p>Activities: <span id="activitiesOutput"></span></p>
+      <p>Location: <span id="locationOutput"></span></p>
+    </div>
+
+    <div class="section">
+      <h2>Personal</h2>
+      <p>Mobile <span id="numberOutput"></span></p>
+      <p>Zip Code <span id="zipOutput"></span></p>
+    </div>
+
+    <div class="section">
+      <h2>Financial</h2>
+      <p>Funding Sources: <span id="fundingSourcesOutput"></span></p>
+    </div>
+
+    <div class="section">
+      <h2>Professional</h2>
+      <p>Company Name: <span id="companyNameOutput"></span></p>
+      <p>Skills: <span id="skillsOutput"></span></p>
+    </div>
+  </div>
+
+  <script>
+    // Retrieve the URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // Display the form data on the page
+    document.getElementById('numberOutput').textContent = urlParams.get('mobile');
+    document.getElementById('zipOutput').textContent = urlParams.get('zipcode');
+    document.getElementById('activitiesOutput').textContent = urlParams.get('activities');
+    document.getElementById('locationOutput').textContent = urlParams.get('location');
+    document.getElementById('fundingSourcesOutput').textContent = urlParams.get('fundingSources');
+    document.getElementById('companyNameOutput').textContent = urlParams.get('companyName');
+    document.getElementById('skillsOutput').textContent = urlParams.get('skills').replace(/,/g, ', ');
+
+    // Display the uploaded image
+    function displayImage(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function (event) {
+        const imgElement = document.createElement('img');
+        imgElement.src = event.target.result;
+        document.querySelector('.uploaded-image').innerHTML = '';
+        document.querySelector('.uploaded-image').appendChild(imgElement);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  </script>
+</body>
+</html>
